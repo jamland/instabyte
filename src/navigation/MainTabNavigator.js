@@ -1,66 +1,103 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Entypo } from '@expo/vector-icons';
 import { TabNavigator, TabBarBottom } from 'react-navigation';
 
 import { colors } from '../config/Theme';
+import InstaFont from '../components/InstaFont';
 
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
-import PostScreen from '../screens/PostScreen';
+import CreatePostScreen from '../screens/CreatePostScreen';
 import LikesScreen from '../screens/LikesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+
+
+const defaultNavigationOptions = {
+  headerStyle: {
+    backgroundColor: '#C6C6C6',
+  },
+  headerTintColor: 'black',
+}
+
+const createTabBarIconWrapper = (
+  TabBarIconComponent,
+  defaultProps,
+) => props => <TabBarIconComponent {...defaultProps} color={props.tintColor} />
 
 export default TabNavigator(
   {
     Home: {
       screen: HomeScreen,
+      navigationOptions: {
+        ...defaultNavigationOptions,
+        tabBarIcon: createTabBarIconWrapper(InstaFont, {
+          name: 'home',
+          size: 30,
+        })
+      },
     },
     Search: {
       screen: SearchScreen,
+      navigationOptions: {
+        ...defaultNavigationOptions,
+        tabBarIcon: createTabBarIconWrapper(InstaFont, {
+          name: 'search',
+          size: 45,
+        })
+      },
     },
-    Post: {
-      screen: PostScreen,
+    CreatePost: {
+      screen: CreatePostScreen,
+      navigationOptions: {
+        ...defaultNavigationOptions,
+        tabBarIcon: createTabBarIconWrapper(Entypo, {
+          name: 'squared-plus',
+          size: 40,
+        })
+      },
     },
     Likes: {
       screen: LikesScreen,
+      navigationOptions: {
+        ...defaultNavigationOptions,
+        tabBarIcon: createTabBarIconWrapper(InstaFont, {
+          name: 'heart',
+          size: 25,
+        })
+      },
     },
     Profile: {
       screen: ProfileScreen,
+      navigationOptions: {
+        ...defaultNavigationOptions,
+        tabBarIcon: createTabBarIconWrapper(Entypo, {
+          name: 'user',
+          size: 25,
+        })
+      },
     },
   },
   {
     navigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ focused }) => {
-        const { routeName } = navigation.state;
-        let iconName;
-        switch (routeName) {
-          case 'Home':
-            iconName =
-              Platform.OS === 'ios'
-                ? `ios-information-circle${focused ? '' : '-outline'}`
-                : 'md-information-circle';
-            break;
-          // case 'Links':
-          //   iconName = Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link';
-          //   break;
-          // case 'Settings':
-          //   iconName =
-          //     Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options';
-        }
-        return (
-          <Ionicons
-            name={iconName}
-            size={28}
-            style={{ marginBottom: -3, width: 25 }}
-            color={focused ? colors.tabIconSelected : colors.tabIconDefault}
-          />
-        );
-      },
+
     }),
-    tabBarComponent: TabBarBottom,
-    tabBarPosition: 'bottom',
-    animationEnabled: false,
-    swipeEnabled: false,
+    initialRouteName: 'Home',
+
+    tabBarOptions: {
+      inactiveTintColor: colors.tabIconDefault,
+      activeTintColor: colors.tabIconSelected,
+      tabBarComponent: TabBarBottom,
+      tabBarPosition: 'bottom',
+      animationEnabled: false,
+      swipeEnabled: false,
+      showLabel: false,
+      tabStyle: {
+
+      },
+      style: {
+        backgroundColor: colors.backgroundGrey,
+      },
+    }
   }
 );

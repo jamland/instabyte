@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { WebBrowser } from 'expo';
 
 import InstaFont from '../components/InstaFont';
 
@@ -20,6 +19,7 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+
           <InstaFont
             name="heart"
             size={40}

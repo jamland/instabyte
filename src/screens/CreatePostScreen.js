@@ -5,11 +5,11 @@ import {
   StyleSheet,
 } from 'react-native';
 
-export default class PostScreen extends Component {
+export default class CreatePostScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>I'm the PostScreen component</Text>
+        <Text>I'm the CreatePostScreen component</Text>
       </View>
     );
   }
