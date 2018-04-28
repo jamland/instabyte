@@ -2,14 +2,25 @@ const primary300 = '#C6C6C6';
 const primary500 = '#707070';
 const primary700 = '#252525';
 const greyFA = '#FAFAFA';
+const grey9 = '#949494';
+const greyD = '#DBDBDB';
 
-const tintColor = primary500;
+const tintColor = primary700;
 
 export const colors = {
-  tintColor: primary500,
+  text: primary700,
+  primary: primary700,
+  secondText: primary500,
+  lightText: primary300,
+  actions: grey9,
+  recordButton: greyD,
+
+  tintColor: primary700,
   tabIconDefault: primary300,
   tabIconSelected: tintColor,
   backgroundGrey: greyFA,
+
+  anchor: '#4195E9',
 
   tabBar: '#fefefe',
   errorBackground: 'red',

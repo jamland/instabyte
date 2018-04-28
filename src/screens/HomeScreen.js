@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {
   Image,
   Platform,
@@ -8,26 +9,30 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import * as HomeActions from '../actions/Home.actions';
 
-import InstaFont from '../components/InstaFont';
+import Feed from '../components/Home/Feed';
+import Logo from '../../assets/images/logo.png';
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    title: <Image
+            style={{width: 100, height: 40,}}
+            source={Logo}
+           />,
   };
+
+  constructor(props) {
+    super(props);
+    this.props.fetchHomeData();
+  }
 
   render() {
     return (
       <View style={styles.container}>
-
-          <InstaFont
-            name="heart"
-            size={40}
-            // color="white"
-          />
-
+        <Feed />
       </View>
-    );
+    )
   }
 
 }
@@ -35,8 +40,17 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: 'white',
   },
 });
+
+
+const mapStateToProps = (state) => ({
+
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchHomeData: () => dispatch(HomeActions.fetchHomeData()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

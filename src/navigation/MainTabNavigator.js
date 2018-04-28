@@ -1,5 +1,8 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import {
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import { TabNavigator, TabBarBottom } from 'react-navigation';
 
@@ -8,16 +11,16 @@ import InstaFont from '../components/InstaFont';
 
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
-import CreatePostScreen from '../screens/CreatePostScreen';
+import CreatePostStack from './CreatePostStack';
 import LikesScreen from '../screens/LikesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 
 
 const defaultNavigationOptions = {
   headerStyle: {
-    backgroundColor: '#C6C6C6',
+    backgroundColor: colors.backgroundGrey,
   },
-  headerTintColor: 'black',
+  headerTintColor: colors.tintColor,
 }
 
 const createTabBarIconWrapper = (
@@ -29,13 +32,35 @@ export default TabNavigator(
   {
     Home: {
       screen: HomeScreen,
-      navigationOptions: {
+      navigationOptions:  ({ navigation }) => ({
         ...defaultNavigationOptions,
         tabBarIcon: createTabBarIconWrapper(InstaFont, {
           name: 'home',
           size: 30,
-        })
-      },
+        }),
+        headerLeft: (
+          <TouchableOpacity
+            onPress={() => navigation.goBack(null)}
+          >
+            <InstaFont
+              name="camera"
+              size={30}
+              style={{marginLeft: 10, marginBottom: 10,}}
+            />
+          </TouchableOpacity>
+        ),
+        headerRight: (
+          <TouchableOpacity
+            onPress={() => navigation.goBack(null)}
+          >
+            <InstaFont
+              name="plane"
+              size={25}
+              style={{marginRight: 15, marginBottom: 10,}}
+            />
+          </TouchableOpacity>
+        ),
+      }),
     },
     Search: {
       screen: SearchScreen,
@@ -48,9 +73,10 @@ export default TabNavigator(
       },
     },
     CreatePost: {
-      screen: CreatePostScreen,
+      screen: CreatePostStack,
       navigationOptions: {
         ...defaultNavigationOptions,
+        tabBarVisible: false,
         tabBarIcon: createTabBarIconWrapper(Entypo, {
           name: 'squared-plus',
           size: 40,
@@ -79,22 +105,21 @@ export default TabNavigator(
     },
   },
   {
+    initialRouteName: 'CreatePost',
     navigationOptions: ({ navigation }) => ({
 
     }),
-    initialRouteName: 'Home',
+    initialRouteName: 'CreatePost',
+    tabBarPosition: 'bottom',
+    tabBarComponent: TabBarBottom,
+    animationEnabled: false,
+    swipeEnabled: false,
+    headerMode: 'screen',
 
     tabBarOptions: {
       inactiveTintColor: colors.tabIconDefault,
       activeTintColor: colors.tabIconSelected,
-      tabBarComponent: TabBarBottom,
-      tabBarPosition: 'bottom',
-      animationEnabled: false,
-      swipeEnabled: false,
       showLabel: false,
-      tabStyle: {
-
-      },
       style: {
         backgroundColor: colors.backgroundGrey,
       },

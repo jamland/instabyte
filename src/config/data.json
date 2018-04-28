@@ -1,0 +1,50 @@
+{
+  feed: [
+    {
+      id: 0,
+      authorId: 0,
+      uri: "https://s3.amazonaws.com/instabyte/posts/01.jpg",
+      likes: 20,
+      comments: [
+        {
+          authorId: 2,
+          text: "nice nice nice.. 😊🚣🏽",
+          date: "25-04-2018 10:00",
+        },
+      ]
+    },
+    {
+      id: 1,
+      authorId: 2,
+      uri: "https://s3.amazonaws.com/instabyte/posts/02.jpg",
+      likes: 20,
+      comments: [
+        {
+          authorId: 0,
+          text: "Mez who den loollll﻿",
+          date: "25-04-2018 10:00",
+        },
+        {
+          authorId: 2,
+          text: "Bare re uploads lately.. you man just take your time man stop rushing lol﻿",
+          date: "25-04-2018 15:00",
+        },
+      ]
+    },
+  ],
+  users: [
+    {
+      id: 0,
+      name: "ket",
+      avatar: "https://s3.amazonaws.com/instabyte/users/01.jpg",
+    }, {
+      id: 1,
+      name: "encryptionBoy",
+      avatar: "https://s3.amazonaws.com/instabyte/users/02.jpg",
+    }, {
+      id: 2,
+      name: "sarah_4688",
+      avatar: "https://s3.amazonaws.com/instabyte/users/03.jpg",
+    },
+  ]
+}
