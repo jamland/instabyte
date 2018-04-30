@@ -26,9 +26,26 @@ class ShareImageScreen extends Component {
     headerLeft: (<MaterialCommunityIcons
       name="arrow-left"
       style={styles.backBtn}
-      onPress={() => props.navigation.goBack()}
+      onPress={() => this.props.postImage()}
     />),
   });
+
+  state = {
+    caption: ''
+  }
+
+  setCaptionHandler = (caption) => {
+    this.setState({caption})
+  }
+
+  postImage = () => {
+    this.props.postImage({
+      caption: this.state.caption,
+    }).then((result) => {
+      
+      if (result) navigation.navigate('Home');
+    });
+  }
 
   render() {
 
@@ -37,6 +54,8 @@ class ShareImageScreen extends Component {
 
         <PostImageComponent
           image={this.props.image}
+          caption={this.state.caption}
+          setCaptionHandler={ text => this.setCaptionHandler(text)}
         />
 
       </View>
@@ -47,6 +66,7 @@ class ShareImageScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   nextBtn: {
     fontSize: 20,
@@ -66,7 +86,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  // setImageForPost: (img) => dispatch(PostActions.setImageForPost(img)),
+  postImage: (details) => dispatch(PostActions.postImage(details)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShareImageScreen);

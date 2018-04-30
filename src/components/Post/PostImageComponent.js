@@ -6,12 +6,9 @@ import {
   Image,
   TextInput,
 } from 'react-native';
+import {colors} from '../../config/Theme';
 
 export default class PostImageComponent extends Component {
-  state = {
-    caption: ''
-  }
-
   render() {
     const uri = this.props.image.uri;
 
@@ -25,10 +22,13 @@ export default class PostImageComponent extends Component {
           />
           <TextInput
             style={styles.caption}
-            onChangeText={(text) => this.setState({caption: text})}
-            value={this.state.caption}
+            onChangeText={(text) => this.props.setCaptionHandler(text)}
+            value={this.props.caption}
             blurOnSubmit={true}
             underlineColorAndroid={"transparent"}
+            placeholder="Write a caption..."
+            multiline={true}
+            blurOnSubmit={true}
           />
         </View>
 
@@ -41,10 +41,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  // postDetails: {
-  //   flexDirection: 'row',
-  //   padding: 10,
-  // }
+  postDetails: {
+    flexDirection: 'row',
+    padding: 10,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.secondText,
+    alignItems: 'center',
+  },
   imagePreview: {
     width: 60,
     height: 60,
@@ -52,7 +55,7 @@ const styles = StyleSheet.create({
   },
   caption: {
     height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
+    borderWidth: 0,
+    flex: 1,
   },
 });
