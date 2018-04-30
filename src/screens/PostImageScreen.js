@@ -6,29 +6,38 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as PostActions from '../actions/Post.actions';
 import {colors} from '../config/Theme';
 
 import PostImageComponent from '../components/Post/PostImageComponent';
 
+const ShareImageScreenPointer = {}
 class ShareImageScreen extends Component {
   static navigationOptions = (props) => ({
     title: 'Share To',
     headerBackTitle: 'Back',
     headerRight: (
       <TouchableOpacity
-        onPress={() => props.navigation.navigate('Home')}
+        onPress={() => ShareImageScreenPointer.this.postImage()}
       >
         <Text style={styles.nextBtn}>Share</Text>
       </TouchableOpacity>
     ),
-    headerLeft: (<MaterialCommunityIcons
-      name="arrow-left"
-      style={styles.backBtn}
-      onPress={() => this.props.postImage()}
-    />),
+    headerLeft: (
+      <MaterialCommunityIcons
+        name="arrow-left"
+        style={styles.backBtn}
+        onPress={() => props.navigation.goBack(null)}
+      />
+    ),
   });
+
+
+  componentWillMount () {
+    ShareImageScreenPointer.this = this;
+  }
 
   state = {
     caption: ''
@@ -42,8 +51,14 @@ class ShareImageScreen extends Component {
     this.props.postImage({
       caption: this.state.caption,
     }).then((result) => {
-      
-      if (result) navigation.navigate('Home');
+
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'CreateImage' })],
+      });
+      this.props.navigation.dispatch(resetAction);
+
+      if (result) this.props.navigation.navigate('Home');
     });
   }
 

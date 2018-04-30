@@ -10,6 +10,7 @@ export const fetchHomeData = () => async (dispatch, getState) => {
   ]) )
   .then( data => {
       dispatch({type: 'CONTENT_LOADED'});
+      dispatch({type: 'FEED_LOADED'});
     }
   )
 }

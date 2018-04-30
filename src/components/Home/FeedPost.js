@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import format from 'date-fns/format';
 import {
   View,
   Text,
@@ -10,8 +11,8 @@ import {Image as ImageWithCache} from "react-native-expo-image-cache";
 import {colors} from '../../config/Theme';
 
 import InstaFont from '../InstaFont';
-import Avatar from '../../../assets/images/users/01.jpg';
-import Post from '../../../assets/images/posts/01.jpg';
+import Comments from './Comments';
+import ImageComponent from '../common/ImageComponent';
 
 const win = Dimensions.get('window');
 
@@ -20,17 +21,26 @@ export default class FeedPost extends Component {
     const { data } = this.props;
     const author = this.props.users.filter( user => user.id === data.authorId)[0] || {}
 
-    const preview = { uri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAAH6Nf8rAAAABGdBTUEAALGPC/xhBQAAAD9JREFUGBlj/A8EDEDABCLAACQC5jHC5EDCcA5cIZwBl4Loh5BwWWRB4lVi1U68IFaLkF0CY2M1EiaJTA+gQgApmhwFHvIPpAAAAABJRU5ErkJggg==" };
     const uri = data.uri;
     const uriAuthor = author.avatar;
+
+    const isLocalFile = uri.startsWith('assets-library:')
+      ? true
+      : false;
+    const isLocalAvatar = author.avatar.startsWith('assets-library:')
+      ? true
+      : false;
+
+    const createdDate = format(data.created, 'Do MMMM',)
 
     return (
       <View style={styles.container}>
 
         <View style={styles.header}>
-          <ImageWithCache
+
+          <ImageComponent
             style={styles.avatar}
-            {...{preview, uri: uriAuthor}}
+            uri={uriAuthor}
           />
           <Text style={styles.headerAuthorName}>
             {author.name}
@@ -40,20 +50,22 @@ export default class FeedPost extends Component {
             style={styles.menuToggler}
             name="kebab"
           />
+
         </View>
 
-        <ImageWithCache
+        <ImageComponent
           style={{
             flex: 1,
             alignSelf: 'stretch',
             width: win.width,
             height: win.width,
           }}
-          {...{preview, uri}}
+          uri={uri}
         />
 
         <View style={styles.footer}>
           <View style={styles.actions}>
+
             <InstaFont
               name="heart-o"
               size={40}
@@ -70,20 +82,14 @@ export default class FeedPost extends Component {
 
           <Text style={styles.likes}>{data.likes} likes</Text>
 
-          <View style={styles.commentView}>
-            <Text style={styles.commentAuthor}>UserName</Text>
-            <Text style={styles.commentText}>lorem ipsum....</Text>
-          </View>
+          <Comments
+            data={data.comments}
+            users={this.props.users}
+          />
 
-          <View style={styles.addCommentView}>
-            <Image
-              style={styles.avatar}
-              source={Avatar}
-            />
-            <Text style={styles.addCommentBtn}>Add a comment....</Text>
-          </View>
-
-          <Text style={styles.timeStamp}>2 HOURS AGO</Text>
+          <Text style={styles.timeStamp}>
+            {createdDate}
+          </Text>
         </View>
 
 
@@ -123,33 +129,19 @@ const styles = StyleSheet.create({
   footer: {
     padding: 10,
   },
+  captionView: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+  captionText: {
+    fontSize: 16,
+  },
   likes: {
     fontSize: 16,
     fontWeight: 'bold',
   },
   actions: {
     flexDirection: 'row',
-    alignItems: 'center',
-  },
-  commentView: {
-    flexDirection: 'row',
-    paddingVertical: 5,
-  },
-  commentAuthor: {
-    fontWeight: 'bold',
-    marginRight: 5,
-    fontSize: 16,
-  },
-  commentText: {
-    fontSize: 16,
-  },
-  addCommentBtn: {
-    fontSize: 16,
-    color: colors.actions,
-  },
-  addCommentView: {
-    flexDirection: 'row',
-    paddingVertical: 5,
     alignItems: 'center',
   },
   timeStamp: {

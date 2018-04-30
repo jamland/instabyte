@@ -1,6 +1,7 @@
 export default function reducer ( state = {
   user: null,
-  loading: false
+  loading: false,
+  feedLoaded: false,
 }, action) {
   switch (action.type) {
     case 'CONTENT_LOADING':
@@ -12,6 +13,11 @@ export default function reducer ( state = {
       return {
         ...state,
         loading: false,
+      }
+    case 'FEED_LOADED':
+      return {
+        ...state,
+        feedLoaded: true,
       }
     default:
       return state

@@ -2,8 +2,9 @@ import React from 'react';
 import {
   Platform,
   TouchableOpacity,
+  Text,
 } from 'react-native';
-import { Ionicons, Entypo } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import { TabNavigator, TabBarBottom } from 'react-navigation';
 
 import { colors } from '../config/Theme';
@@ -13,7 +14,7 @@ import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import CreatePostStack from './CreatePostStack';
 import LikesScreen from '../screens/LikesScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import ProfileStack from './ProfileStack';
 
 
 const defaultNavigationOptions = {
@@ -94,22 +95,21 @@ export default TabNavigator(
       },
     },
     Profile: {
-      screen: ProfileScreen,
+      screen: ProfileStack,
       navigationOptions: {
         ...defaultNavigationOptions,
         tabBarIcon: createTabBarIconWrapper(Entypo, {
           name: 'user',
           size: 25,
-        })
+        }),
       },
     },
   },
   {
-    initialRouteName: 'CreatePost',
+    // initialRouteName: 'Profile',
     navigationOptions: ({ navigation }) => ({
 
     }),
-    initialRouteName: 'CreatePost',
     tabBarPosition: 'bottom',
     tabBarComponent: TabBarBottom,
     animationEnabled: false,

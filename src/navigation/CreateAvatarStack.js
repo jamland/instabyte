@@ -13,7 +13,6 @@ import { colors } from '../config/Theme';
 
 import PickImageScreen from '../screens/PickImageScreen';
 import CaptureImageScreen from '../screens/CaptureImageScreen';
-import PostImageScreen from '../screens/PostImageScreen';
 
 import TabBarPhoto from './TabBarPhoto';
 
@@ -24,14 +23,14 @@ const navigationOptions = {
   headerTintColor: colors.tintColor,
 }
 
-const CreateImageTabs = TabNavigator(
+const CreateAvatarTabs = TabNavigator(
   {
-    Gallery: {
+    AvatarFromGallery: {
       screen: PickImageScreen,
       navigationOptions,
     },
 
-    Photo: {
+    AvatarFromCamera: {
       screen: CaptureImageScreen,
       navigationOptions: {
         ...navigationOptions,
@@ -41,12 +40,12 @@ const CreateImageTabs = TabNavigator(
 
   },
   {
+    // initialRouteName: 'Photo',
     tabBarPosition: 'bottom',
     tabBarComponent: TabBarPhoto,
     animationEnabled: true,
     swipeEnabled: true,
     headerMode: 'none',
-    // initialRouteName: 'Photo',
     navigationOptions: ({navigation}) => ({
       headerTitleStyle: {
         fontWeight: 'bold',
@@ -54,7 +53,7 @@ const CreateImageTabs = TabNavigator(
       },
       headerLeft: (
         <TouchableOpacity
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('Profile')}
         >
           <Ionicons
             name="ios-close"
@@ -66,7 +65,7 @@ const CreateImageTabs = TabNavigator(
       ),
       headerRight: (
         <TouchableOpacity
-          onPress={() => navigation.navigate('PostImage')}
+          onPress={() => navigation.navigate('EditProfile')}
         >
           <Text style={styles.nextBtn}>Next</Text>
         </TouchableOpacity>
@@ -75,16 +74,16 @@ const CreateImageTabs = TabNavigator(
   }
 );
 
-const CreatePostStack = StackNavigator(
+const CreateAvatarStack = StackNavigator(
   {
-    CreateImage: {
-      screen: CreateImageTabs,
+    CreateAvatarStack: {
+      screen: CreateAvatarTabs,
       navigationOptions,
     },
-    PostImage: {
-      screen: PostImageScreen,
-      navigationOptions,
-    },
+    // PostImage: {
+    //   screen: PostImageScreen,
+    //   navigationOptions,
+    // },
   },
   {
     // initialRouteName: 'PostImage',
@@ -108,4 +107,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default CreatePostStack;
+export default CreateAvatarStack;

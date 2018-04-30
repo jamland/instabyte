@@ -24,7 +24,8 @@ class HomeScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.props.fetchHomeData();
+
+    if (!this.props.feedLoaded) this.props.fetchHomeData();
   }
 
   render() {
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => ({
-
+  feedLoaded: state.app.feedLoaded,
 });
 
 const mapDispatchToProps = (dispatch) => ({
