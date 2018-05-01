@@ -13,6 +13,8 @@ import {
 import {Image as ImageWithCache} from "react-native-expo-image-cache";
 import {colors} from '../../config/Theme';
 
+import AvatarMask from '../../../assets/images/avatar-mask.png';
+
 const win = Dimensions.get('window');
 
 export default class DeviceGallery extends Component {
@@ -33,7 +35,7 @@ export default class DeviceGallery extends Component {
       assetType: 'All'
     })
     .then(r => {
-      this.props.setImageForPost(r.edges[0].node.image);
+      this.processImage(r.edges[0].node.image);
       this.setState({
         photos: r.edges,
         selectedItem: 0,
@@ -42,14 +44,26 @@ export default class DeviceGallery extends Component {
   }
 
   selectItemHandler = (selectedItem = 0) => {
-    this.props.setImageForPost(this.state.photos[selectedItem].node.image);
+    this.processImage(this.state.photos[selectedItem].node.image);
     this.setState({
       selectedItem,
     });
   }
 
+  processImage = (img) => {
+    if (this.props.parentRoute === 'AvatarFromGallery') {
+      this.props.setImageForAvatar(img);
+    } else {
+      this.props.setImageForPost(img);
+    }
+  }
+
   render() {
     const { photos, selectedItem } = this.state;
+
+    const showMask = this.props.parentRoute === 'AvatarFromGallery'
+      ? true
+      : false;
 
     const renderImages = photos.map( (image, index) => {
       const uri = image.node.image.uri;
@@ -83,6 +97,12 @@ export default class DeviceGallery extends Component {
               <Image
                 style={styles.selectedItem}
                 source={{uri: photos[selectedItem].node.image.uri}}
+              />
+          }
+          {selectedItem !== null && showMask &&
+              <Image
+                style={styles.avatarMast}
+                source={AvatarMask}
               />
           }
         </View>
@@ -132,4 +152,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 3,
   },
+  avatarMast: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: win.width,
+    height: win.width,
+    alignSelf: 'stretch',
+    zIndex: 2,
+    opacity: .5,
+  }
 });

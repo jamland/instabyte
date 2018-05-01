@@ -15,6 +15,8 @@ export const colors = {
   actions: grey9,
   recordButton: greyD,
 
+  inputLabel: grey9,
+
   tintColor: primary700,
   tabIconDefault: primary300,
   tabIconSelected: tintColor,

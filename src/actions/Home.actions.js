@@ -2,25 +2,28 @@ import data from '../config/data.json';
 
 export const fetchHomeData = () => async (dispatch, getState) => {
 
-  dispatch({type: 'CONTENT_LOADING'});
+  return new Promise( async (resolve, reject) => {
+    dispatch({type: 'CONTENT_LOADING'});
 
-  dispatch( (dispatch, getState) => Promise.all([
-    dispatch( fetchFeed() ),
-    dispatch( fetchUsers() ),
-  ]) )
-  .then( data => {
+    dispatch( (dispatch, getState) => Promise.all([
+      dispatch( fetchFeed() ),
+      dispatch( fetchUsers() ),
+    ]) )
+    .then( data => {
       dispatch({type: 'CONTENT_LOADED'});
       dispatch({type: 'FEED_LOADED'});
-    }
-  )
+
+      resolve(true);
+    }).catch((err) => {
+      reject(err);
+    })
+  });
 }
 
 export const fetchFeed = () => async (dispatch, getState) => {
   return new Promise( async (resolve, reject) => {
 
     try {
-      console.log('result',data);
-
       // simulate fetch
       setTimeout(() => {
         const feed = data.feed;
@@ -50,7 +53,6 @@ export const fetchFeed = () => async (dispatch, getState) => {
 export const fetchUsers = () => async (dispatch, getState) => {
   return new Promise( async (resolve, reject) => {
     try {
-      console.log('result',data);
 
       // simulate fetch
       setTimeout(() => {

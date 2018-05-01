@@ -9,25 +9,12 @@ import {
 import { Feather } from '@expo/vector-icons';
 import {colors} from '../../config/Theme';
 
+import EditAvatar from '../EditProfile/EditAvatar';
 import ImageComponent from '../common/ImageComponent';
 
 export default class UserProfile extends Component {
   editProfileHandler = () => {
-
-  }
-
-  editAvatar = () => {
-    ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Take a Photo', 'Pick from Gallery'],
-      cancelButtonIndex: 0,
-    },
-    (buttonIndex) => {
-      if (buttonIndex === 1) {
-        this.props.navigation.navigate('AvatarFromCamera');
-      } else if (buttonIndex === 2) {
-        this.props.navigation.navigate('AvatarFromGallery');
-      }
-    });
+    this.props.navigation.navigate('EditProfile');
   }
 
   render() {
@@ -54,25 +41,13 @@ export default class UserProfile extends Component {
 
         <View style={styles.row}>
 
-
-          <TouchableOpacity
-            style={styles.avatarView}
-            onPress={this.editAvatar}
-          >
-
-            <ImageComponent
-              style={styles.avatar}
-              uri={user.avatar}
+          <View style={styles.avatarView}>
+            <EditAvatar
+              user={this.props.user}
+              navigation={this.props.navigation}
+              editProfileScreen={false}
             />
-            <View style={styles.plusIconView}>
-              <Feather
-                style={styles.plusIcon}
-                name="plus"
-                size={20}
-              />
-            </View>
-
-          </TouchableOpacity>
+          </View>
 
           <View style={styles.profileRow}>
 
@@ -127,13 +102,6 @@ const styles = StyleSheet.create({
   },
   avatarView: {
     flex: 0,
-
-  },
-  avatar: {
-    height: 100,
-    width: 100,
-    borderRadius: 50,
-    alignSelf: 'stretch',
     marginRight: 20,
   },
   profileRow: {
@@ -176,20 +144,4 @@ const styles = StyleSheet.create({
   userDetails: {
     fontSize: 18,
   },
-  plusIconView: {
-    backgroundColor: colors.anchor,
-    borderRadius: 20,
-    width: 26,
-    height: 26,
-    position: 'absolute',
-    bottom: 5,
-    right: 20,
-    borderWidth: 2,
-    borderColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  plusIcon: {
-    color: 'white',
-  }
 });

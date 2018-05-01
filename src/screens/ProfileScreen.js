@@ -11,21 +11,30 @@ import UserProfile from '../components/Profile/UserProfile';
 import UserPostList from '../components/Profile/UserPostList';
 
 class ProfileScreen extends Component {
-  static navigationOptions = (props) => ({
-    title: null,
-    headerLeft: (
-      <Text>
-        User
-      </Text>
-    ),
-  });
+  static navigationOptions = (props) => {
+    if (!props.navigation.state.params) return {
+      title: null,
+    }
+
+    return {
+      title: props.navigation.state.params.username
+    }
+  };
 
   constructor(props) {
     super(props);
 
-    this.props.getUserDetails();
+    const navState = this.props.navigation.state.params;
+    if (navState && navState.imageForAvatar) {
+      this.props.updateUserAvatar();
+    }
   }
 
+  componentWillMount () {
+    this.props.navigation.setParams({
+      username: this.props.user.username
+    });
+  }
 
   render() {
     if (!this.props.user) return null;
@@ -37,6 +46,7 @@ class ProfileScreen extends Component {
 
         <UserProfile
           user={this.props.user}
+          navigation={this.props.navigation}
           {...this.props}
         />
 
@@ -63,7 +73,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getUserDetails: () => dispatch(ProfileActions.getUserDetails()),
+  updateUserAvatar: () => dispatch(ProfileActions.updateUserAvatar()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);

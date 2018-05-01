@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import * as HomeActions from '../actions/Home.actions';
+import * as AppActions from '../actions/App.actions';
 
 import Feed from '../components/Home/Feed';
 import Logo from '../../assets/images/logo.png';
@@ -17,7 +17,7 @@ import Logo from '../../assets/images/logo.png';
 class HomeScreen extends React.Component {
   static navigationOptions = {
     title: <Image
-            style={{width: 100, height: 40,}}
+            style={{width: 80, height: 35,}}
             source={Logo}
            />,
   };
@@ -25,7 +25,7 @@ class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    if (!this.props.feedLoaded) this.props.fetchHomeData();
+    this.props.initSettings();
   }
 
   render() {
@@ -47,11 +47,10 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => ({
-  feedLoaded: state.app.feedLoaded,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchHomeData: () => dispatch(HomeActions.fetchHomeData()),
+  initSettings: () => dispatch(AppActions.initSettings()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

@@ -65,7 +65,9 @@ const CreateAvatarTabs = TabNavigator(
       ),
       headerRight: (
         <TouchableOpacity
-          onPress={() => navigation.navigate('EditProfile')}
+          onPress={() => navigation.navigate('Profile', {
+            imageForAvatar: true,
+          })}
         >
           <Text style={styles.nextBtn}>Next</Text>
         </TouchableOpacity>

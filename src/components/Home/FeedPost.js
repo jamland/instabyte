@@ -43,13 +43,13 @@ export default class FeedPost extends Component {
             uri={uriAuthor}
           />
           <Text style={styles.headerAuthorName}>
-            {author.name}
+            {author.username}
           </Text>
-
+{/*
           <InstaFont
             style={styles.menuToggler}
             name="kebab"
-          />
+          /> */}
 
         </View>
 
@@ -85,6 +85,7 @@ export default class FeedPost extends Component {
           <Comments
             data={data.comments}
             users={this.props.users}
+            userAvatar={uriAuthor}
           />
 
           <Text style={styles.timeStamp}>

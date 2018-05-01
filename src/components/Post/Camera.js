@@ -8,6 +8,7 @@ import {
   Platform,
   StyleSheet,
 } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import { Camera, Permissions } from 'expo';
 import { colors } from '../../config/Theme';
 
@@ -23,8 +24,10 @@ export default class CameraComponent extends React.Component {
     processingPhoto: false,
   };
 
-  componentWillMount () {
-    this.props.setImageForPost();
+  async componentWillMount() {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({ hasCameraPermission: status === 'granted' });
+    this.processImage(null);
   }
 
   prepareRatio = async () => {
@@ -43,19 +46,28 @@ export default class CameraComponent extends React.Component {
       this.setState({processingPhoto: true});
       const photo = await this.camera.takePictureAsync();
 
-      console.log('photo',photo);
       this.setState({
         photo,
         processingPhoto: false
       });
-      this.props.setImageForPost(photo);
-      this.props.navigation.navigate('PostImage');
+      this.processImage(photo);
+
+      if (this.props.parentRoute === 'AvatarFromCamera') {
+        this.props.navigation.navigate('Profile', {
+          imageForAvatar: true,
+        });
+      } else {
+        this.props.navigation.navigate('PostImage');
+      }
     }
   }
 
-  async componentWillMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === 'granted' });
+  processImage = (img) => {
+    if (this.props.parentRoute === 'AvatarFromCamera') {
+      this.props.setImageForAvatar(img);
+    } else {
+      this.props.setImageForPost(img);
+    }
   }
 
   render() {
@@ -91,13 +103,6 @@ export default class CameraComponent extends React.Component {
             {!this.state.processingPhoto &&
               <View style={styles.cameraActions}>
                 <TouchableOpacity
-                  style={{
-                    // flex: 0.1,
-                    // alignSelf: 'flex-end',
-                    // alignItems: 'center',
-                    // position: 'relative',
-                    // zIndex: 3,
-                  }}
                   onPress={() => {
                     this.setState({
                       type: this.state.type === Camera.Constants.Type.back
@@ -107,8 +112,12 @@ export default class CameraComponent extends React.Component {
                   }}
                   >
                     <Text
-                      style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
-                      Flip
+                      style={styles.flip}
+                    >
+                      <Feather
+                        name="refresh-ccw"
+                        size={30}
+                      />
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -190,5 +199,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.backgroundGrey,
     zIndex: 3,
     position: 'relative',
+  },
+  flip: {
+    fontSize: 18,
+    marginBottom: 10,
+    marginLeft: 10,
+    color: 'white',
   }
 });

@@ -7,8 +7,6 @@ import {
 } from 'react-native';
 import {colors} from '../../config/Theme';
 
-import Avatar from '../../../assets/images/users/01.jpg';
-
 export default class Comments extends Component {
   render() {
     if (!this.props.data.length) return null;
@@ -22,7 +20,7 @@ export default class Comments extends Component {
           key={index}
         >
           <Text style={styles.commentAuthor}>
-            {author.name + ' '}
+            {author.username + ' '}
           </Text>
           <Text style={styles.commentText}>
             {item.text}
@@ -39,7 +37,7 @@ export default class Comments extends Component {
         <View style={styles.addCommentView}>
           <Image
             style={styles.avatar}
-            source={Avatar}
+            source={{uri: this.props.userAvatar}}
           />
           <Text style={styles.addCommentBtn}>Add a comment....</Text>
         </View>

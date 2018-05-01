@@ -41,7 +41,7 @@ export default TabNavigator(
         }),
         headerLeft: (
           <TouchableOpacity
-            onPress={() => navigation.goBack(null)}
+            onPress={() => navigation.navigate("Photo")}
           >
             <InstaFont
               name="camera"
