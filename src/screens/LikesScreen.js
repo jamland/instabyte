@@ -6,10 +6,18 @@ import {
 } from 'react-native';
 
 export default class LikesScreen extends Component {
+  static navigationOptions = {
+    title: 'Likes',
+    headerStyle: {
+      fontWeight: 'bold',
+      fontSize: 18,
+    },
+  };
+
   render() {
     return (
       <View style={styles.container}>
-        <Text>I'm the LikesScreen component</Text>
+        <Text>LikesScreen component</Text>
       </View>
     );
   }
@@ -18,5 +26,7 @@ export default class LikesScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

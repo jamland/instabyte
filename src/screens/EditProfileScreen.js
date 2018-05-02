@@ -5,6 +5,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,7 +22,10 @@ class EditProfileScreen extends Component {
     headerBackTitle: 'Back',
     headerRight: (
       <TouchableOpacity
-        onPress={() => ScreenPointer.this.updateUser()}
+        onPress={() => {
+          Keyboard.dismiss;
+          ScreenPointer.this.updateUser();
+        }}
       >
         <Ionicons
           style={styles.checkIcon}

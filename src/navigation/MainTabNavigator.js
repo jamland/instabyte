@@ -12,9 +12,11 @@ import InstaFont from '../components/InstaFont';
 
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
-import CreatePostStack from './CreatePostStack';
 import LikesScreen from '../screens/LikesScreen';
+
+import CreatePostStack from './CreatePostStack';
 import ProfileStack from './ProfileStack';
+import UserAvatar from '../components/common/UserAvatar';
 
 
 const defaultNavigationOptions = {
@@ -52,7 +54,7 @@ export default TabNavigator(
         ),
         headerRight: (
           <TouchableOpacity
-            onPress={() => navigation.goBack(null)}
+            onPress={() => {}}
           >
             <InstaFont
               name="plane"
@@ -98,10 +100,7 @@ export default TabNavigator(
       screen: ProfileStack,
       navigationOptions: {
         ...defaultNavigationOptions,
-        tabBarIcon: createTabBarIconWrapper(Entypo, {
-          name: 'user',
-          size: 25,
-        }),
+        tabBarIcon: (<UserAvatar />),
       },
     },
   },

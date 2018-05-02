@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Linking,
   ActivityIndicator,
   Text,
   View,
@@ -25,9 +26,16 @@ export default class CameraComponent extends React.Component {
   };
 
   async componentWillMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    const {status} = await Permissions.getAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === 'granted' });
     this.processImage(null);
+
+    if (status !== 'granted') {
+      const {status} = await Permissions.askAsync(Permissions.CAMERA);
+      if (status === 'granted') {
+        this.setState({ hasCameraPermission: true });
+      }
+    }
   }
 
   prepareRatio = async () => {
@@ -70,81 +78,103 @@ export default class CameraComponent extends React.Component {
     }
   }
 
+  openSettings = () => {
+    const url = 'app-settings:';
+    Linking.openURL(url);
+  }
+
   render() {
     const { hasCameraPermission } = this.state;
+
+
     if (hasCameraPermission === null) {
-      return (<View />);
-    } else if (hasCameraPermission === false) {
-      return (<Text>No access to camera</Text>);
+      return null;
+    }
 
-    } else {
-      const ratios = this.state.ratio.split(':');
-      const cameraHeight = win.width*(ratios[0] / ratios[1]);
-
+    if (hasCameraPermission === false) {
       return (
-        <View style={styles.container}>
+        <View style={styles.deniedView}>
+          <Text style={styles.deniedText}>Please enable permissions for accessing your camera.</Text>
 
-          <View style={styles.cameraView}>
-            <Camera
-              style={[
-                styles.camera,
-                {
-                  width: win.width,
-                  height: cameraHeight,
-                }
-              ]}
-              ref={(cam) => this.camera = cam}
-              type={this.state.type}
-              onCameraReady={this.prepareRatio}
-              ratio={this.state.ratio}
-            >
-            </Camera>
-
-            {!this.state.processingPhoto &&
-              <View style={styles.cameraActions}>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.setState({
-                      type: this.state.type === Camera.Constants.Type.back
-                      ? Camera.Constants.Type.front
-                      : Camera.Constants.Type.back,
-                    });
-                  }}
-                  >
-                    <Text
-                      style={styles.flip}
-                    >
-                      <Feather
-                        name="refresh-ccw"
-                        size={30}
-                      />
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              }
-
-            {this.state.processingPhoto &&
-              <ActivityIndicator
-                style={styles.loader}
-                size="large"
-                color={'white'}
-              />
-            }
-
-          </View>
-
-          <View style={styles.recordView}>
-
+          {Platform.OS === 'ios' &&
             <TouchableOpacity
-              style={styles.snapBtn}
-              onPress={this.takePicture}
+              style={styles.openSettings}
+              onPress={() => this.openSettings()}
             >
+              <Text style={styles.openSettingsText}>Open Settings</Text>
             </TouchableOpacity>
-
-          </View>
+          }
         </View>
       );
     }
+
+
+    const ratios = this.state.ratio.split(':');
+    const cameraHeight = win.width*(ratios[0] / ratios[1]);
+
+    return (
+      <View style={styles.container}>
+
+        <View style={styles.cameraView}>
+          <Camera
+            style={[
+              styles.camera,
+              {
+                width: win.width,
+                height: cameraHeight,
+              }
+            ]}
+            ref={(cam) => this.camera = cam}
+            type={this.state.type}
+            onCameraReady={this.prepareRatio}
+            ratio={this.state.ratio}
+          >
+          </Camera>
+
+          {!this.state.processingPhoto &&
+            <View style={styles.cameraActions}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({
+                    type: this.state.type === Camera.Constants.Type.back
+                    ? Camera.Constants.Type.front
+                    : Camera.Constants.Type.back,
+                  });
+                }}
+                >
+                  <Text
+                    style={styles.flip}
+                  >
+                    <Feather
+                      name="refresh-ccw"
+                      size={30}
+                    />
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            }
+
+          {this.state.processingPhoto &&
+            <ActivityIndicator
+              style={styles.loader}
+              size="large"
+              color={'white'}
+            />
+          }
+
+        </View>
+
+        <View style={styles.recordView}>
+
+          <TouchableOpacity
+            style={styles.snapBtn}
+            onPress={this.takePicture}
+          >
+          </TouchableOpacity>
+
+        </View>
+      </View>
+    );
   }
 }
 
@@ -205,5 +235,22 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 10,
     color: 'white',
+  },
+  deniedView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  deniedText: {
+    fontSize: 16,
+    color: colors.text,
+  },
+  openSettings: {
+    marginTop: 20,
+  },
+  openSettingsText: {
+    fontSize: 16,
+    color: colors.anchor,
   }
 });

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  Linking,
   ActivityIndicator,
   View,
   ScrollView,
@@ -9,7 +10,10 @@ import {
   Image,
   Dimensions,
   TouchableHighlight,
+  TouchableOpacity,
+  Platform,
 } from 'react-native';
+import { Permissions } from 'expo';
 import {Image as ImageWithCache} from "react-native-expo-image-cache";
 import {colors} from '../../config/Theme';
 
@@ -21,26 +25,42 @@ export default class DeviceGallery extends Component {
   state = {
     photos: [],
     selectedItem: null,
+    hasCameraRollPermission: null,
   }
 
   constructor(props) {
     super(props);
-    this.getPhotos();
   }
 
+  async componentWillMount() {
+    const {status} = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+    this.setState({ hasCameraRollPermission: status === 'granted' });
+
+    if (status === 'granted') {
+      this.getPhotos();
+    } else {
+      const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (status === 'granted') {
+        this.setState({ hasCameraRollPermission: true });
+        this.getPhotos();
+      }
+    }
+  }
 
   getPhotos = () => {
-    CameraRoll.getPhotos({
-      first: 20,
-      assetType: 'All'
-    })
-    .then(r => {
-      this.processImage(r.edges[0].node.image);
-      this.setState({
-        photos: r.edges,
-        selectedItem: 0,
+    if (this.state.hasCameraRollPermission) {
+      CameraRoll.getPhotos({
+        first: 20,
+        assetType: 'All'
+      })
+      .then(r => {
+        this.processImage(r.edges[0].node.image);
+        this.setState({
+          photos: r.edges,
+          selectedItem: 0,
+        });
       });
-    })
+    }
   }
 
   selectItemHandler = (selectedItem = 0) => {
@@ -58,8 +78,34 @@ export default class DeviceGallery extends Component {
     }
   }
 
+  openSettings = () => {
+    const url = 'app-settings:';
+    Linking.openURL(url);
+  }
+
   render() {
-    const { photos, selectedItem } = this.state;
+    const { photos, selectedItem, hasCameraRollPermission } = this.state;
+
+    if (hasCameraRollPermission === null) {
+      return null;
+    }
+
+    if (hasCameraRollPermission === false) {
+      return (
+        <View style={styles.deniedView}>
+          <Text style={styles.deniedText}>Please enable permissions for accessing your device gallery.</Text>
+
+          {Platform.OS === 'ios' &&
+            <TouchableOpacity
+              style={styles.openSettings}
+              onPress={() => this.openSettings()}
+            >
+              <Text style={styles.openSettingsText}>Open Settings</Text>
+            </TouchableOpacity>
+          }
+        </View>
+      );
+    }
 
     const showMask = this.props.parentRoute === 'AvatarFromGallery'
       ? true
@@ -161,5 +207,22 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     zIndex: 2,
     opacity: .5,
+  },
+  deniedView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  deniedText: {
+    fontSize: 16,
+    color: colors.text,
+  },
+  openSettings: {
+    marginTop: 20,
+  },
+  openSettingsText: {
+    fontSize: 16,
+    color: colors.anchor,
   }
 });

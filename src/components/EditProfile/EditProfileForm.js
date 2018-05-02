@@ -33,6 +33,7 @@ class EditProfileForm extends Component {
   }
 
   updateForm = (name, value) => {
+    console.log('value',value);
     const updatedProfileState = {
       ...this.state.profileData,
       [name]: value,
@@ -43,7 +44,7 @@ class EditProfileForm extends Component {
     });
 
     // copy data to store so it can be saved from react navigation header
-    this.props.updateProfileFormData(this.state.profileData);
+    this.props.updateProfileFormData(updatedProfileState);
   }
 
   render() {

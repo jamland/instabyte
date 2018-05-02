@@ -16,10 +16,28 @@ import Logo from '../../assets/images/logo.png';
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
-    title: <Image
-            style={{width: 80, height: 35,}}
-            source={Logo}
-           />,
+    headerTitleStyle: {
+      flex: 1,
+    },
+    headerTitle: (
+      <View style={{
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <Text>
+        <Image
+          style={{
+            alignSelf: 'center',
+            flex: 1,
+          }}
+          resizeMode="contain"
+          source={Logo}
+         />
+       </Text>
+     </View>
+    ),
   };
 
   constructor(props) {
@@ -43,6 +61,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  logo: {
+    width: 85,
+    height: 35,
+    alignSelf: 'stretch',
+  }
 });
 
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  Image,
   View,
   Text,
   StyleSheet,
@@ -10,8 +11,6 @@ import { connectActionSheet } from '@expo/react-native-action-sheet';
 import {colors} from '../../config/Theme';
 import { Feather } from '@expo/vector-icons';
 
-import ImageComponent from '../common/ImageComponent';
-
 @connectActionSheet
 class EditAvatar extends Component {
 
@@ -19,7 +18,6 @@ class EditAvatar extends Component {
     const options = ['Take a Photo', 'Pick from Gallery', 'Cancel'];
     const cancelButtonIndex = 2;
 
-    console.log('this.props',this.props);
     this.props.showActionSheetWithOptions({
       options,
       cancelButtonIndex,
@@ -44,9 +42,9 @@ class EditAvatar extends Component {
           onPress={this.editAvatar}
         >
 
-          <ImageComponent
+          <Image
             style={styles.avatar}
-            uri={user.avatar}
+            source={{uri: user.avatar}}
           />
 
           {this.props.editProfileScreen &&

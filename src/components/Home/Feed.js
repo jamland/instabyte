@@ -29,7 +29,6 @@ class Feed extends React.Component {
       </View>
     )
 
-    console.log('feed === null || feed.length',feed);
     if (feed === null || feed.length === 0) return (
       <View style={styles.containerFull}>
         <Text>No posts yet</Text>
