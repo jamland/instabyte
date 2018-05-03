@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {
   Image,
   Platform,
@@ -8,26 +9,49 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { WebBrowser } from 'expo';
+import * as AppActions from '../actions/App.actions';
 
-import InstaFont from '../components/InstaFont';
+import Feed from '../components/Home/Feed';
+import Logo from '../../assets/images/logo.png';
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    headerTitleStyle: {
+      flex: 1,
+    },
+    headerTitle: (
+      <View style={{
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <Text>
+        <Image
+          style={{
+            alignSelf: 'center',
+            flex: 1,
+          }}
+          resizeMode="contain"
+          source={Logo}
+         />
+       </Text>
+     </View>
+    ),
   };
+
+  constructor(props) {
+    super(props);
+
+    this.props.initSettings();
+  }
 
   render() {
     return (
       <View style={styles.container}>
-          <InstaFont
-            name="heart"
-            size={40}
-            // color="white"
-          />
-
+        <Feed />
       </View>
-    );
+    )
   }
 
 }
@@ -35,8 +59,21 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: 'white',
   },
+  logo: {
+    width: 85,
+    height: 35,
+    alignSelf: 'stretch',
+  }
 });
+
+
+const mapStateToProps = (state) => ({
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  initSettings: () => dispatch(AppActions.initSettings()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

@@ -6,10 +6,18 @@ import {
 } from 'react-native';
 
 export default class SearchScreen extends Component {
+  static navigationOptions = {
+    title: 'Search',
+    headerStyle: {
+      fontWeight: 'bold',
+      fontSize: 18,
+    },
+  };
+
   render() {
     return (
       <View style={styles.container}>
-        <Text>I'm the SearchScreen component</Text>
+        <Text>SearchScreen component</Text>
       </View>
     );
   }
@@ -18,5 +26,7 @@ export default class SearchScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

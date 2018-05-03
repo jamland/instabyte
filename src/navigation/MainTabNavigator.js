@@ -1,66 +1,127 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import {
+  Platform,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
+import { Entypo } from '@expo/vector-icons';
 import { TabNavigator, TabBarBottom } from 'react-navigation';
 
 import { colors } from '../config/Theme';
+import InstaFont from '../components/InstaFont';
 
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
-import PostScreen from '../screens/PostScreen';
 import LikesScreen from '../screens/LikesScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+
+import CreatePostStack from './CreatePostStack';
+import ProfileStack from './ProfileStack';
+import UserAvatar from '../components/common/UserAvatar';
+
+
+const defaultNavigationOptions = {
+  headerStyle: {
+    backgroundColor: colors.backgroundGrey,
+  },
+  headerTintColor: colors.tintColor,
+}
+
+const createTabBarIconWrapper = (
+  TabBarIconComponent,
+  defaultProps,
+) => props => <TabBarIconComponent {...defaultProps} color={props.tintColor} />
 
 export default TabNavigator(
   {
     Home: {
       screen: HomeScreen,
+      navigationOptions:  ({ navigation }) => ({
+        ...defaultNavigationOptions,
+        tabBarIcon: createTabBarIconWrapper(InstaFont, {
+          name: 'home',
+          size: 30,
+        }),
+        headerLeft: (
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Photo")}
+          >
+            <InstaFont
+              name="camera"
+              size={30}
+              style={{marginLeft: 10, marginBottom: 10,}}
+            />
+          </TouchableOpacity>
+        ),
+        headerRight: (
+          <TouchableOpacity
+            onPress={() => {}}
+          >
+            <InstaFont
+              name="plane"
+              size={25}
+              style={{marginRight: 15, marginBottom: 10,}}
+            />
+          </TouchableOpacity>
+        ),
+      }),
     },
     Search: {
       screen: SearchScreen,
+      navigationOptions: {
+        ...defaultNavigationOptions,
+        tabBarIcon: createTabBarIconWrapper(InstaFont, {
+          name: 'search',
+          size: 45,
+        })
+      },
     },
-    Post: {
-      screen: PostScreen,
+    CreatePost: {
+      screen: CreatePostStack,
+      navigationOptions: {
+        ...defaultNavigationOptions,
+        tabBarVisible: false,
+        tabBarIcon: createTabBarIconWrapper(Entypo, {
+          name: 'squared-plus',
+          size: 40,
+        })
+      },
     },
     Likes: {
       screen: LikesScreen,
+      navigationOptions: {
+        ...defaultNavigationOptions,
+        tabBarIcon: createTabBarIconWrapper(InstaFont, {
+          name: 'heart',
+          size: 25,
+        })
+      },
     },
     Profile: {
-      screen: ProfileScreen,
+      screen: ProfileStack,
+      navigationOptions: {
+        ...defaultNavigationOptions,
+        tabBarIcon: (<UserAvatar />),
+      },
     },
   },
   {
+    // initialRouteName: 'Profile',
     navigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ focused }) => {
-        const { routeName } = navigation.state;
-        let iconName;
-        switch (routeName) {
-          case 'Home':
-            iconName =
-              Platform.OS === 'ios'
-                ? `ios-information-circle${focused ? '' : '-outline'}`
-                : 'md-information-circle';
-            break;
-          // case 'Links':
-          //   iconName = Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link';
-          //   break;
-          // case 'Settings':
-          //   iconName =
-          //     Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options';
-        }
-        return (
-          <Ionicons
-            name={iconName}
-            size={28}
-            style={{ marginBottom: -3, width: 25 }}
-            color={focused ? colors.tabIconSelected : colors.tabIconDefault}
-          />
-        );
-      },
+
     }),
-    tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
+    tabBarComponent: TabBarBottom,
     animationEnabled: false,
     swipeEnabled: false,
+    headerMode: 'screen',
+
+    tabBarOptions: {
+      inactiveTintColor: colors.tabIconDefault,
+      activeTintColor: colors.tabIconSelected,
+      showLabel: false,
+      style: {
+        backgroundColor: colors.backgroundGrey,
+      },
+    }
   }
 );
