@@ -10,17 +10,19 @@ export const postImage = (details = {}) => async (dispatch, getState) => {
   return new Promise( (resolve, reject) => {
 
     selectedImage = getState().post.imageForPost;
+    const newDate = JSON.stringify (new Date());
+
     const imageForPost = {
       ...selectedImage,
-      id: new Date(),
+      id: newDate,
       authorId: 0,
       likes: 0,
-      created: new Date(),
+      created: newDate,
       comments: [
         {
           authorId: 0,
           text: details.caption,
-          date: new Date(),
+          date: newDate,
         },
       ],
     }

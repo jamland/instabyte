@@ -25,7 +25,7 @@ const configureStore = (initialState) => {
   );
 
   const persistor = persistStore(store)
-  .purge();
+  // .purge();
 
   return { store, persistor }
 }

@@ -11,6 +11,8 @@ import { connectActionSheet } from '@expo/react-native-action-sheet';
 import {colors} from '../../config/Theme';
 import { Feather } from '@expo/vector-icons';
 
+import ImageComponent from '../common/ImageComponent';
+
 @connectActionSheet
 class EditAvatar extends Component {
 
@@ -42,9 +44,9 @@ class EditAvatar extends Component {
           onPress={this.editAvatar}
         >
 
-          <Image
+          <ImageComponent
             style={styles.avatar}
-            source={{uri: user.avatar}}
+            uri={user.avatar}
           />
 
           {this.props.editProfileScreen &&

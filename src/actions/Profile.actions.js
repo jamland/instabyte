@@ -1,10 +1,14 @@
 export const getUserDetails = (id = 0) => async (dispatch, getState) => {
-  const user = getState().users.data.filter( user => user.id === id)[0];
+  const users = getState().users.data;
 
-  dispatch({
-    type: 'UPDATE_CURRENT_USER',
-    payload: user
-  });
+  if (users !== null && users.constructor === Array) {
+    const user = getState().users.data.filter( user => user.id === id)[0];
+
+    dispatch({
+      type: 'UPDATE_CURRENT_USER',
+      payload: user
+    });
+  }
 }
 
 export const updateUsers = (userUpdates) => async (dispatch, getState) => {

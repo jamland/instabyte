@@ -6,6 +6,7 @@ import {
   Text,
   View,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
 
 import FeedPost from './FeedPost';
@@ -16,6 +17,17 @@ class Feed extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  renderItem = (item) => {
+    return (
+      <FeedPost
+        data={item}
+        users={this.props.users}
+      />
+    )
+  }
+
+  _keyExtractor = (item, index) => `feedPost-${item.id}`;
 
   render() {
     const { loading, feed } = this.props;
@@ -35,22 +47,14 @@ class Feed extends React.Component {
       </View>
     )
 
-    const renderPosts = feed.map((item, index) => {
-      return (
-        <FeedPost
-          data={item}
-          users={this.props.users}
-          key={index}
-        />
-      )
-    })
-
     return (
-      <ScrollView style={styles.container}>
-
-          {renderPosts}
-
-      </ScrollView>
+      <FlatList
+        style={styles.container}
+        data={feed}
+        renderItem={({item}) => this.renderItem(item)}
+        keyExtractor={this._keyExtractor}
+      >
+      </FlatList>
     );
   }
 

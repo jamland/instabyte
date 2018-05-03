@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import {colors} from '../../config/Theme';
 
+import ImageComponent from '../common/ImageComponent';
+
 class UserAvatar extends Component {
   render() {
     const {user} = this.props;
@@ -16,9 +18,9 @@ class UserAvatar extends Component {
 
     return (
       <View style={styles.container}>
-        <Image
+        <ImageComponent
           style={styles.avatar}
-          source={{uri: user.avatar}}
+          uri={user.avatar}
         />
       </View>
     );
