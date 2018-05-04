@@ -3,7 +3,7 @@
 Instagram app clone for IOS / Android made with [RN](https://github.com/facebook/react-native) & [Expo](https://github.com/expo/expo)
 
 ## Demo
-....
+https://youtu.be/Mtqh9fzDKJk
 
 ## Features
 
