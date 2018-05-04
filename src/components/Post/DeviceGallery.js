@@ -23,6 +23,7 @@ const win = Dimensions.get('window');
 
 export default class DeviceGallery extends Component {
   state = {
+    isMounted: false,
     photos: [],
     selectedItem: null,
     hasCameraRollPermission: null,
@@ -32,19 +33,28 @@ export default class DeviceGallery extends Component {
     super(props);
   }
 
-  async componentWillMount() {
-    const {status} = await Permissions.getAsync(Permissions.CAMERA_ROLL);
-    this.setState({ hasCameraRollPermission: status === 'granted' });
+  async componentDidMount() {
+    this.setState({isMounted: true});
 
-    if (status === 'granted') {
-      this.getPhotos();
-    } else {
-      const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    const {status} = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+
+    if (this.state.isMounted) {
+      this.setState({ hasCameraRollPermission: status === 'granted' });
+
       if (status === 'granted') {
-        this.setState({ hasCameraRollPermission: true });
         this.getPhotos();
+      } else {
+        const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status === 'granted') {
+          this.setState({ hasCameraRollPermission: true });
+          this.getPhotos();
+        }
       }
     }
+  }
+
+  componentWillUnmount(){
+    this.setState({isMounted: false})
   }
 
   getPhotos = () => {
@@ -92,7 +102,9 @@ export default class DeviceGallery extends Component {
 
     if (hasCameraRollPermission === false) {
       return (
-        <View style={styles.deniedView}>
+        <View
+          style={styles.deniedView}
+        >
           <Text style={styles.deniedText}>Please enable permissions for accessing your device gallery.</Text>
 
           {Platform.OS === 'ios' &&
@@ -129,7 +141,9 @@ export default class DeviceGallery extends Component {
     })
 
     return (
-      <View style={styles.container}>
+      <View
+        style={styles.container}
+      >
 
         <View style={styles.selectedItemView}>
           {selectedItem === null &&
