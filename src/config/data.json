@@ -3,7 +3,7 @@
 			"id": 0,
 			"authorId": 0,
 			"uri": "https://s3.amazonaws.com/instabyte/posts/01.jpg",
-			"likes": 2,
+			"likes": [0,1,2],
 			"created": "Mon Apr 30 2018 14:27:05 GMT+0300 (EEST)",
 			"comments": [{
 				"authorId": 2,
@@ -15,7 +15,7 @@
 			"id": 1,
 			"authorId": 2,
 			"uri": "https://s3.amazonaws.com/instabyte/posts/02.jpg",
-			"likes": 0,
+			"likes": [],
 			"created": "Mon Apr 28 2018 10:27:05 GMT+0300 (EEST)",
 			"comments": [{
 					"authorId": 0,
@@ -32,21 +32,21 @@
 			"id": 3,
 			"authorId": 0,
 			"uri": "https://s3.amazonaws.com/instabyte/posts/03.jpg",
-			"likes": 0,
+			"likes": [3],
 			"created": "Mon Apr 30 2018 14:27:05 GMT+0300 (EEST)",
 			"comments": []
 		}, {
 			"id": 4,
 			"authorId": 0,
 			"uri": "https://s3.amazonaws.com/instabyte/posts/04.jpg",
-			"likes": 0,
+			"likes": [0,1,2],
 			"created": "Mon Apr 30 2018 14:27:05 GMT+0300 (EEST)",
 			"comments": []
 		}, {
 			"id": 5,
 			"authorId": 0,
 			"uri": "https://s3.amazonaws.com/instabyte/posts/05.jpg",
-			"likes": 1,
+			"likes": [],
 			"created": "Mon Apr 30 2018 14:27:05 GMT+0300 (EEST)",
 			"comments": []
 		}

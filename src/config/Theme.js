@@ -23,6 +23,7 @@ export const colors = {
   backgroundGrey: greyFA,
 
   anchor: '#4195E9',
+  heart: '#EF4D5A',
 
   tabBar: '#fefefe',
   errorBackground: 'red',
