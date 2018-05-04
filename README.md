@@ -1,6 +1,7 @@
 # instabyte
 
-Instagram app clone for IOS / Android made with [RN](https://github.com/facebook/react-native) & [Expo](https://github.com/expo/expo)
+Instagram app clone for IOS / Android made with [RN](https://github.com/facebook/react-native) & [Expo](https://github.com/expo/expo)   
+https://expo.io/@jamland/instabyte
 
 ## Demo
 https://youtu.be/Mtqh9fzDKJk
