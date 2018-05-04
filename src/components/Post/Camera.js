@@ -18,6 +18,7 @@ const DESIRED_RATIO = "1:1";
 
 export default class CameraComponent extends React.Component {
   state = {
+    isMounted: false,
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
     ratio: DESIRED_RATIO,
@@ -25,17 +26,26 @@ export default class CameraComponent extends React.Component {
     processingPhoto: false,
   };
 
-  async componentWillMount() {
-    const {status} = await Permissions.getAsync(Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === 'granted' });
-    this.processImage(null);
+  async componentDidMount() {
+    this.setState({isMounted: true});
 
-    if (status !== 'granted') {
-      const {status} = await Permissions.askAsync(Permissions.CAMERA);
-      if (status === 'granted') {
-        this.setState({ hasCameraPermission: true });
+    const {status} = await Permissions.getAsync(Permissions.CAMERA);
+
+    if (this.state.isMounted) {
+      this.setState({ hasCameraPermission: status === 'granted' });
+      this.processImage(null);
+
+      if (status !== 'granted') {
+        const {status} = await Permissions.askAsync(Permissions.CAMERA);
+        if (status === 'granted') {
+          this.setState({ hasCameraPermission: true });
+        }
       }
     }
+  }
+
+  componentWillUnmount(){
+    this.setState({isMounted: false})
   }
 
   prepareRatio = async () => {

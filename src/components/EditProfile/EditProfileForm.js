@@ -33,7 +33,6 @@ class EditProfileForm extends Component {
   }
 
   updateForm = (name, value) => {
-    console.log('value',value);
     const updatedProfileState = {
       ...this.state.profileData,
       [name]: value,
