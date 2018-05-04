@@ -16,7 +16,7 @@ export const postImage = (details = {}) => async (dispatch, getState) => {
       ...selectedImage,
       id: newDate,
       authorId: 0,
-      likes: 0,
+      likes: [],
       created: newDate,
       comments: [
         {

@@ -31,7 +31,15 @@ export default class FeedPost extends Component {
       ? true
       : false;
 
-    const createdDate = format(data.created, 'Do MMMM',)
+    const createdDate = format(data.created, 'Do MMMM');
+
+    const isPostLiked = this.props.currentUser !== null
+      ? data.likes.filter( userId => userId === this.props.currentUser.id)[0] >= 0
+      : false;
+
+    const avatar = this.props.currentUser !== null
+      ? this.props.currentUser.avatar
+      : null;
 
     return (
       <View style={styles.container}>
@@ -66,10 +74,16 @@ export default class FeedPost extends Component {
         <View style={styles.footer}>
           <View style={styles.actions}>
 
-            <InstaFont
-              name="heart-o"
-              size={40}
-            />
+            <View
+              style={styles.likeBtn}
+            >
+              <InstaFont
+                name={isPostLiked ? "heart" : "heart-o"}
+                style={isPostLiked ? styles.liked : styles.notLiked}
+                size={isPostLiked ? 32 : 40}
+              />
+            </View>
+
             <InstaFont
               name="bubble-o"
               size={30}
@@ -80,13 +94,15 @@ export default class FeedPost extends Component {
             />
           </View>
 
-          <Text style={styles.likes}>{data.likes} likes</Text>
+          <Text style={styles.likes}>{data.likes.length} likes</Text>
 
-          <Comments
-            data={data.comments}
-            users={this.props.users}
-            userAvatar={uriAuthor}
-          />
+          {avatar &&
+            <Comments
+              data={data.comments}
+              users={this.props.users}
+              userAvatar={avatar}
+            />
+          }
 
           <Text style={styles.timeStamp}>
             {createdDate}
@@ -148,5 +164,13 @@ const styles = StyleSheet.create({
   timeStamp: {
     color: colors.actions,
     fontSize: 14,
+  },
+  likeBtn: {
+    width: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  liked: {
+    color: colors.heart,
   }
 });

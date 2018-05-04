@@ -1,4 +1,5 @@
 import React from 'react';
+import uuidv4 from 'uuid/v4';
 import {connect} from 'react-redux';
 import {
   ScrollView,
@@ -8,6 +9,7 @@ import {
   ActivityIndicator,
   FlatList,
 } from 'react-native';
+import * as HomeActions from '../../actions/Home.actions';
 
 import FeedPost from './FeedPost';
 import {colors} from '../../config/Theme';
@@ -23,11 +25,12 @@ class Feed extends React.Component {
       <FeedPost
         data={item}
         users={this.props.users}
+        currentUser={this.props.currentUser}
       />
     )
   }
 
-  _keyExtractor = (item, index) => `feedPost-${item.id}`;
+  _keyExtractor = (item, index) => `feedPost-${uuidv4()}`;
 
   render() {
     const { loading, feed } = this.props;
@@ -53,6 +56,8 @@ class Feed extends React.Component {
         data={feed}
         renderItem={({item}) => this.renderItem(item)}
         keyExtractor={this._keyExtractor}
+        currentUser={this.props.currentUser}
+        users={this.props.users}
       >
       </FlatList>
     );
@@ -76,10 +81,10 @@ const mapStateToProps = (state) => ({
   feed: state.feed.data,
   users: state.users.data,
   loading: state.app.loading,
+  currentUser: state.profile.currentUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchFeed: () => dispatch(HomeActions.fetchFeed()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Feed);
