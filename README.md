@@ -1,5 +1,6 @@
 ## ⚠️ update on Feb 17, 2019
-it won't run anymore before rewriting some code parts for navigation. details: https://github.com/jamland/instabyte/pull/20
+it won't run anymore before rewriting some code parts for navigation.     
+details: https://github.com/jamland/instabyte/pull/20
 
 # instabyte
 
