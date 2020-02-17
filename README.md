@@ -1,3 +1,6 @@
+## ⚠️ update on Feb 17, 2019
+it won't run anymore before rewriting some code parts for navigation. details: https://github.com/jamland/instabyte/pull/20
+
 # instabyte
 
 Instagram app clone for IOS / Android made with [RN](https://github.com/facebook/react-native) & [Expo](https://github.com/expo/expo)   
@@ -16,4 +19,7 @@ https://youtu.be/Mtqh9fzDKJk
 
 ## How To Run
 
-+ can be opened and run with Expo XDE
+```
+expo install
+expo start
+```
